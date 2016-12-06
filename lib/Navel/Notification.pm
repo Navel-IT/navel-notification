@@ -16,7 +16,7 @@ use constant {
 
 use Navel::Utils qw/
     croak
-    :json:
+    :json
     isint
  /;
 
