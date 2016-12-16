@@ -11,7 +11,8 @@ use Navel::Base;
 
 use constant {
     I_CLASS => 0,
-    I_ID => 1
+    I_ID => 1,
+    I_ERRORS => 2
 };
 
 use Navel::Utils qw/
@@ -33,16 +34,22 @@ sub deserialize {
 
     $class->new(
         class => $notification->[I_CLASS],
-        id => $notification->[I_ID]
+        id => $notification->[I_ID],
+        errors => $notification->[I_ERRORS]
     );
 }
 
 sub new {
     my ($class, %options) = @_;
 
+    $options{errors} //= [];
+
+    croak('errors must be a ARRAY reference') unless ref $options{errors} eq 'ARRAY';
+
     bless {
-        class => $options{class},
-        id => $options{id} // croak('id must be defined')
+        class => $options{class} // croak('class must be defined'),
+        id => $options{id} // croak('id must be defined'),
+        errors => $options{errors}
     }, ref $class || $class;
 }
 
@@ -53,6 +60,7 @@ sub serialize {
 
     $notification[I_CLASS] = $self->{class};
     $notification[I_ID] = $self->{id};
+    $notification[I_ERRORS] = $self->{errors};
 
     $json_constructor->encode(\@notification);
 }
