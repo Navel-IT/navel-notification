@@ -47,7 +47,7 @@ sub new {
     croak('errors must be a ARRAY reference') unless ref $options{errors} eq 'ARRAY';
 
     bless {
-        class => $options{class} // croak('class must be defined'),
+        class => $options{class},
         id => $options{id} // croak('id must be defined'),
         errors => $options{errors}
     }, ref $class || $class;

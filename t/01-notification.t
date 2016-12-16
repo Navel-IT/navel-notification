@@ -21,7 +21,6 @@ my $notification;
 
 lives_ok {
     $notification = Navel::Notification->new(
-        class => 't',
         id => 't'
     );
 } 'making the notification';
